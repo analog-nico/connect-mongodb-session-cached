@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "connect-mongodb-session": "^1.0.5",
+    "lodash.clonedeep": "^3.0.2",
+    "lodash.isequal": "^3.0.4",
     "two-buckets-memcache": "^0.2.0"
   },
   "engines": {
