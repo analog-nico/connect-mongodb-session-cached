@@ -9,3 +9,4 @@ test/
 .travis.yml
 gulpfile.js
 npm-debug.log
+run-connect-mongodb-session-tests.md
