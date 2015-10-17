@@ -44,8 +44,6 @@ Like in most cases the page load includes the main html page, some js and css fi
 
 **Only use this library if your load balancer supports sticky sessions.** Ask your hosting provider if the load balancer always forwards all requests from one IP address to the same node.js instance.
 
-In addition connect-mongodb-session-cached also reduces database calls to store the session. Again for each of the above requests the session is stored to the database by connect-mongodb-session. connect-mongodb-session-cached, however, omits a database call if the session object did not change.
-
 ## Contributing
 
 To set up your development environment for Quota:
