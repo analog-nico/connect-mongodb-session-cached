@@ -12,7 +12,9 @@ var sinon = require('sinon');
 
 describe('MongoDBStoreCached', function () {
 
-    var server, store, getMethod, destroyMethod, setMethod;
+    var server, store,
+        getMethod, destroyMethod, setMethod,
+        cacheGetMethod, cacheRemoveMethod, cacheSetMethod;
 
     before(function (done) {
 
@@ -23,6 +25,13 @@ describe('MongoDBStoreCached', function () {
         getMethod = sinon.spy(store, 'get');
         destroyMethod = sinon.spy(store, 'destroy');
         setMethod = sinon.spy(store, 'set');
+
+        cacheGetMethod = sinon.spy(store._cache, 'get');
+        cacheRemoveMethod = sinon.spy(store._cache, 'remove');
+        cacheSetMethod = sinon.spy(store._cache, 'set');
+
+
+        request = request.defaults({jar: true});
 
 
         var app = express();
@@ -63,15 +72,59 @@ describe('MongoDBStoreCached', function () {
             expect(destroyMethod.callCount).to.eql(0);
             expect(setMethod.callCount).to.eql(2);
 
+            expect(cacheGetMethod.callCount).to.eql(0);
+            expect(cacheRemoveMethod.callCount).to.eql(0);
+            expect(cacheSetMethod.callCount).to.eql(2);
+
             done();
 
         });
 
     });
 
-    it('should get the session from cache');
+    it('should get the session from cache', function (done) {
 
-    it('should get the session from db if cache empty');
+        request('http://localhost:3030', function (err, response, body) {
+
+            expect(body).to.eql('Hello World!');
+
+            expect(getMethod.callCount).to.eql(1);
+            expect(destroyMethod.callCount).to.eql(0);
+            expect(setMethod.callCount).to.eql(3);
+
+            expect(cacheGetMethod.callCount).to.eql(1);
+            expect(cacheRemoveMethod.callCount).to.eql(0);
+            expect(cacheSetMethod.callCount).to.eql(3);
+
+            done();
+
+        });
+
+    });
+
+    it('should get the session from db if cache empty', function (done) {
+
+        store._cache.remove(cacheSetMethod.lastCall.args[0]);
+
+        request('http://localhost:3030', function (err, response, body) {
+
+            expect(body).to.eql('Hello World!');
+
+            expect(getMethod.callCount).to.eql(2);
+            expect(destroyMethod.callCount).to.eql(0);
+            expect(setMethod.callCount).to.eql(4);
+
+            expect(cacheGetMethod.callCount).to.eql(2);
+            expect(cacheRemoveMethod.callCount).to.eql(1);
+            expect(cacheSetMethod.callCount).to.eql(4);
+
+            expect(cacheGetMethod.threw('Error')).to.eql(true);
+
+            done();
+
+        });
+
+    });
 
     it('should destroy the session entry');
 
