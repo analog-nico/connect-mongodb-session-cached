@@ -40,8 +40,14 @@ describe('MongoDBStoreCached', function () {
             store: store,
             secret: 'sssh!',
             saveUninitialized: true,
-            resave: true
+            resave: true,
+            unset: 'destroy'
         }));
+
+        app.get('/destroy', function (req, res) {
+            delete req.session;
+            res.send('Destroyed!');
+        });
 
         app.get('*', function (req, res) {
             res.send('Hello World!');
@@ -126,6 +132,24 @@ describe('MongoDBStoreCached', function () {
 
     });
 
-    it('should destroy the session entry');
+    it('should destroy the session entry', function (done) {
+
+        request('http://localhost:3030/destroy', function (err, response, body) {
+
+            expect(body).to.eql('Destroyed!');
+
+            expect(getMethod.callCount).to.eql(3);
+            expect(destroyMethod.callCount).to.eql(1);
+            expect(setMethod.callCount).to.eql(4);
+
+            expect(cacheGetMethod.callCount).to.eql(3);
+            expect(cacheRemoveMethod.callCount).to.eql(2);
+            expect(cacheSetMethod.callCount).to.eql(4);
+
+            done();
+
+        });
+
+    });
 
 });
