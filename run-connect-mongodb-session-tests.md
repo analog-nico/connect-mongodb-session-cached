@@ -17,4 +17,4 @@ module.exports = require('../connect-mongodb-session-cached');
 6. Go to temp/connect-mongodb-session-cached/lib/index.js
 7. Comment out the `var mongoDBStoreFactory = require('connect-mongodb-session');` line.
 8. Add `var mongoDBStoreFactory = require('../../connect-mongodb-session/index-orig.js');` right below.
-9. Go to temp/connect-mongodb-session-cached/ and run `npm test`.
+9. Go to temp/connect-mongodb-session/ and run `bash ./setup-tests.sh && npm test`.
