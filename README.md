@@ -60,6 +60,9 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 
 ## Change History
 
+- v0.1.1 (2016-04-03)
+    - Added node v5 to CI build
+    - Updated dependencies
 - v0.1.0 (2015-10-18)
     - Initial version
 
