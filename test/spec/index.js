@@ -114,6 +114,7 @@ describe('MongoDBStoreCached', function () {
                 // I don't know why but sometimes `set` is called twice.
                 if (setMethod.callCount === setMethodCallCount + 1) {
                     setMethodCallCount += 1;
+                    cacheSetMethodCallCount += 1;
                 }
 
                 validateCallCounts();
@@ -270,6 +271,7 @@ describe('MongoDBStoreCached', function () {
                 // I don't know why but sometimes `set` is called twice.
                 if (setMethod.callCount === setMethodCallCount + 1) {
                     setMethodCallCount += 1;
+                    cacheSetMethodCallCount += 1;
                 }
 
                 validateCallCounts();
