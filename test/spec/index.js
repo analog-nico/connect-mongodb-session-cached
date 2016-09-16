@@ -78,11 +78,11 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(0);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(2);
+                expect(setMethod.callCount).to.eql(1);
 
                 expect(cacheGetMethod.callCount).to.eql(0);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
-                expect(cacheSetMethod.callCount).to.eql(2);
+                expect(cacheSetMethod.callCount).to.eql(1);
 
                 done();
 
@@ -98,11 +98,11 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(1);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(3);
+                expect(setMethod.callCount).to.eql(2);
 
                 expect(cacheGetMethod.callCount).to.eql(1);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
-                expect(cacheSetMethod.callCount).to.eql(3);
+                expect(cacheSetMethod.callCount).to.eql(2);
 
                 done();
 
@@ -120,11 +120,11 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(2);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(4);
+                expect(setMethod.callCount).to.eql(3);
 
                 expect(cacheGetMethod.callCount).to.eql(2);
                 expect(cacheRemoveMethod.callCount).to.eql(1);
-                expect(cacheSetMethod.callCount).to.eql(4);
+                expect(cacheSetMethod.callCount).to.eql(3);
 
                 expect(cacheGetMethod.threw('Error')).to.eql(true);
 
@@ -142,11 +142,11 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(3);
                 expect(destroyMethod.callCount).to.eql(1);
-                expect(setMethod.callCount).to.eql(4);
+                expect(setMethod.callCount).to.eql(3);
 
                 expect(cacheGetMethod.callCount).to.eql(3);
                 expect(cacheRemoveMethod.callCount).to.eql(2);
-                expect(cacheSetMethod.callCount).to.eql(4);
+                expect(cacheSetMethod.callCount).to.eql(3);
 
                 done();
 
@@ -219,11 +219,11 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(0);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(2);
+                expect(setMethod.callCount).to.eql(1);
 
                 expect(cacheGetMethod.callCount).to.eql(0);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
-                expect(cacheSetMethod.callCount).to.eql(2);
+                expect(cacheSetMethod.callCount).to.eql(1);
 
                 setTimeout(function () {
 
@@ -233,11 +233,11 @@ describe('MongoDBStoreCached', function () {
 
                         expect(getMethod.callCount).to.eql(1);
                         expect(destroyMethod.callCount).to.eql(0);
-                        expect(setMethod.callCount).to.eql(3);
+                        expect(setMethod.callCount).to.eql(2);
 
                         expect(cacheGetMethod.callCount).to.eql(1);
                         expect(cacheRemoveMethod.callCount).to.eql(0);
-                        expect(cacheSetMethod.callCount).to.eql(3);
+                        expect(cacheSetMethod.callCount).to.eql(2);
 
                         expect(cacheGetMethod.threw('Error')).to.eql(true);
 
