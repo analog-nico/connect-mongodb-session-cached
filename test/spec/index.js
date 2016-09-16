@@ -72,13 +72,21 @@ describe('MongoDBStoreCached', function () {
 
         it('should set the session entry', function (done) {
 
+            expect(getMethod.callCount).to.eql(0);
+            expect(destroyMethod.callCount).to.eql(0);
+            expect(setMethod.callCount, setMethod.getCalls()).to.eql(0);
+
+            expect(cacheGetMethod.callCount).to.eql(0);
+            expect(cacheRemoveMethod.callCount).to.eql(0);
+            expect(cacheSetMethod.callCount).to.eql(0);
+
             request('http://localhost:3030', function (err, response, body) {
 
                 expect(body).to.eql('Hello World!');
 
                 expect(getMethod.callCount).to.eql(0);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(2);
+                expect(setMethod.callCount, setMethod.getCalls()).to.eql(2);
 
                 expect(cacheGetMethod.callCount).to.eql(0);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
@@ -98,7 +106,7 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(1);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(3);
+                expect(setMethod.callCount, setMethod.getCalls()).to.eql(3);
 
                 expect(cacheGetMethod.callCount).to.eql(1);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
@@ -120,7 +128,7 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(2);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(4);
+                expect(setMethod.callCount, setMethod.getCalls()).to.eql(4);
 
                 expect(cacheGetMethod.callCount).to.eql(2);
                 expect(cacheRemoveMethod.callCount).to.eql(1);
@@ -142,7 +150,7 @@ describe('MongoDBStoreCached', function () {
 
                 expect(getMethod.callCount).to.eql(3);
                 expect(destroyMethod.callCount).to.eql(1);
-                expect(setMethod.callCount).to.eql(4);
+                expect(setMethod.callCount, setMethod.getCalls()).to.eql(4);
 
                 expect(cacheGetMethod.callCount).to.eql(3);
                 expect(cacheRemoveMethod.callCount).to.eql(2);
@@ -213,13 +221,21 @@ describe('MongoDBStoreCached', function () {
 
         it('should load the session from db after cache expired', function (done) {
 
+            expect(getMethod.callCount).to.eql(0);
+            expect(destroyMethod.callCount).to.eql(0);
+            expect(setMethod.callCount, setMethod.getCalls()).to.eql(0);
+
+            expect(cacheGetMethod.callCount).to.eql(0);
+            expect(cacheRemoveMethod.callCount).to.eql(0);
+            expect(cacheSetMethod.callCount).to.eql(0);
+
             request('http://localhost:3030', function (err, response, body) {
 
                 expect(body).to.eql('Hello World!');
 
                 expect(getMethod.callCount).to.eql(0);
                 expect(destroyMethod.callCount).to.eql(0);
-                expect(setMethod.callCount).to.eql(2);
+                expect(setMethod.callCount, setMethod.getCalls()).to.eql(2);
 
                 expect(cacheGetMethod.callCount).to.eql(0);
                 expect(cacheRemoveMethod.callCount).to.eql(0);
@@ -233,7 +249,7 @@ describe('MongoDBStoreCached', function () {
 
                         expect(getMethod.callCount).to.eql(1);
                         expect(destroyMethod.callCount).to.eql(0);
-                        expect(setMethod.callCount).to.eql(3);
+                        expect(setMethod.callCount, setMethod.getCalls()).to.eql(3);
 
                         expect(cacheGetMethod.callCount).to.eql(1);
                         expect(cacheRemoveMethod.callCount).to.eql(0);
