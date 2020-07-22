@@ -91,7 +91,7 @@ describe('MongoDBStoreCached', function () {
         after(function (done) {
 
             server.close();
-            store.db.close();
+            store.client.close();
             store._cache.destroy();
             done();
 
@@ -248,7 +248,7 @@ describe('MongoDBStoreCached', function () {
         after(function (done) {
 
             server.close();
-            store.db.close();
+            store.client.close();
             store._cache.destroy();
             done();
 
