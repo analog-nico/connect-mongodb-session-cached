@@ -13,18 +13,20 @@ var sinon = require('sinon');
 describe('MongoDBStoreCached', function () {
 
     var server, store,
-        getMethod, destroyMethod, setMethod, getMethodCallCount, destroyMethodCallCount, setMethodCallCount,
-        cacheGetMethod, cacheRemoveMethod, cacheSetMethod, cacheGetMethodCallCount, cacheRemoveMethodCallCount, cacheSetMethodCallCount;
+        getMethod, destroyMethod, setMethod, clearMethod, getMethodCallCount, destroyMethodCallCount, setMethodCallCount, clearMethodCallCount,
+        cacheGetMethod, cacheRemoveMethod, cacheSetMethod, cacheDestroyMethod, cacheGetMethodCallCount, cacheRemoveMethodCallCount, cacheSetMethodCallCount, cacheDestroyMethodCallCount;
 
     function initCallCounts() {
 
         getMethodCallCount = 0;
         destroyMethodCallCount = 0;
         setMethodCallCount = 0;
+        clearMethodCallCount = 0;
 
         cacheGetMethodCallCount = 0;
         cacheRemoveMethodCallCount = 0;
         cacheSetMethodCallCount = 0;
+        cacheDestroyMethodCallCount = 0;
 
     }
 
@@ -33,10 +35,12 @@ describe('MongoDBStoreCached', function () {
         expect(getMethod.callCount).to.eql(getMethodCallCount);
         expect(destroyMethod.callCount).to.eql(destroyMethodCallCount);
         expect(setMethod.callCount).to.eql(setMethodCallCount);
+        expect(clearMethod.callCount).to.eql(clearMethodCallCount);
 
         expect(cacheGetMethod.callCount).to.eql(cacheGetMethodCallCount);
         expect(cacheRemoveMethod.callCount).to.eql(cacheRemoveMethodCallCount);
         expect(cacheSetMethod.callCount).to.eql(cacheSetMethodCallCount);
+        expect(cacheDestroyMethod.callCount).to.eql(cacheDestroyMethodCallCount);
 
     }
 
@@ -52,10 +56,12 @@ describe('MongoDBStoreCached', function () {
             getMethod = sinon.spy(store, 'get');
             destroyMethod = sinon.spy(store, 'destroy');
             setMethod = sinon.spy(store, 'set');
+            clearMethod = sinon.spy(store, 'clear');
 
             cacheGetMethod = sinon.spy(store._cache, 'get');
             cacheRemoveMethod = sinon.spy(store._cache, 'remove');
             cacheSetMethod = sinon.spy(store._cache, 'set');
+            cacheDestroyMethod = sinon.spy(store._cache, 'destroy');
 
             initCallCounts();
 
@@ -195,6 +201,94 @@ describe('MongoDBStoreCached', function () {
 
         });
 
+        it('should create a new session to replace destroyed session', function (done) {
+
+            request('http://localhost:3030', function (err, response, body) {
+
+                expect(body).to.eql('Hello World!');
+
+                getMethodCallCount += 1;
+                destroyMethodCallCount += 0;
+                setMethodCallCount += 1;
+
+                cacheGetMethodCallCount += 1;
+                cacheRemoveMethodCallCount += 0;
+                cacheSetMethodCallCount += 1;
+
+                // I don't know why but sometimes `set` is called twice.
+                if (setMethod.callCount === setMethodCallCount + 1) {
+                    setMethodCallCount += 1;
+                    cacheSetMethodCallCount += 1;
+                }
+
+                validateCallCounts();
+
+                done();
+
+            });
+
+        });
+
+        it('should clear all sessions', function (done) {
+
+            store.clear();
+
+            getMethodCallCount += 0;
+            destroyMethodCallCount += 0;
+            setMethodCallCount += 0;
+            clearMethodCallCount += 1;
+
+            cacheGetMethodCallCount += 0;
+            cacheRemoveMethodCallCount += 0;
+            cacheSetMethodCallCount += 0;
+            cacheDestroyMethodCallCount += 1;
+
+            validateCallCounts();
+
+            // Cache gets replaced internally -> instrument again
+
+            cacheGetMethod = sinon.spy(store._cache, 'get');
+            cacheRemoveMethod = sinon.spy(store._cache, 'remove');
+            cacheSetMethod = sinon.spy(store._cache, 'set');
+            cacheDestroyMethod = sinon.spy(store._cache, 'destroy');
+
+            cacheGetMethodCallCount = 0;
+            cacheRemoveMethodCallCount = 0;
+            cacheSetMethodCallCount = 0;
+            cacheDestroyMethodCallCount = 0;
+
+            done();
+
+        });
+
+        it('should create a new session again after all sessions were cleared', function (done) {
+
+            request('http://localhost:3030', function (err, response, body) {
+
+                expect(body).to.eql('Hello World!');
+
+                getMethodCallCount += 1;
+                destroyMethodCallCount += 0;
+                setMethodCallCount += 1;
+
+                cacheGetMethodCallCount += 1;
+                cacheRemoveMethodCallCount += 0;
+                cacheSetMethodCallCount += 1;
+
+                // I don't know why but sometimes `set` is called twice.
+                if (setMethod.callCount === setMethodCallCount + 1) {
+                    setMethodCallCount += 1;
+                    cacheSetMethodCallCount += 1;
+                }
+
+                validateCallCounts();
+
+                done();
+
+            });
+
+        });
+
     });
 
     describe('with option for short cache expiry', function () {
@@ -209,10 +303,12 @@ describe('MongoDBStoreCached', function () {
             getMethod = sinon.spy(store, 'get');
             destroyMethod = sinon.spy(store, 'destroy');
             setMethod = sinon.spy(store, 'set');
+            clearMethod = sinon.spy(store, 'clear');
 
             cacheGetMethod = sinon.spy(store._cache, 'get');
             cacheRemoveMethod = sinon.spy(store._cache, 'remove');
             cacheSetMethod = sinon.spy(store._cache, 'set');
+            cacheDestroyMethod = sinon.spy(store._cache, 'destroy');
 
             initCallCounts();
 
