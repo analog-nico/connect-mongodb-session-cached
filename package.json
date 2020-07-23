@@ -1,6 +1,6 @@
 {
   "name": "connect-mongodb-session-cached",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "connect-mongodb-session plus a short living cache to reduce database calls",
   "keywords": [
     "express",

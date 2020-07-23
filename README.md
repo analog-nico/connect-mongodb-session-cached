@@ -60,6 +60,9 @@ If you want to debug a test you should use `gulp test-without-coverage` to run a
 
 ## Change History
 
+- v1.0.0 (2020-07-22)
+    - **Breaking Change**: Upgraded `connect-mongodb-session` from `^1.0.5` to `^2.3.3`. Since `connect-mongodb-session@2` does not support node versions before v4 anymore, this package only supports node v4 and above as well. `connect-mongodb-session` may have introduced further breaking changes.
+    - Fix: `.clear(callback)` clears the cache as well. 
 - v0.1.1 (2016-04-03)
     - Added node v5 to CI build
     - Updated dependencies
